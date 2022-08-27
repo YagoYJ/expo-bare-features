@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "expo-bare-features",
+    "slug": "expo-bare-features",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
