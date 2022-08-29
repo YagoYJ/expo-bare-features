@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Box, Heading } from "native-base";
 import { useMutation } from "react-query";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { MainButton } from "../../components/Form/MainButton";
 import { Form } from "../../components/Form/Form";
@@ -17,14 +18,24 @@ export function Login() {
   const [username, setUsername] = useState("");
 
   const { mutate, isLoading } = useMutation("createUser", createUser, {
-    onSuccess: () => {
-      navigation.navigate("Home");
+    onSuccess: async () => {
+      try {
+        await AsyncStorage.setItem("@username", username);
+        navigation.navigate("Home");
+      } catch (error) {
+        console.log({ error });
+      }
     },
     onError: () => {
       navigation.navigate("Home");
     },
-    onSettled: () => {
-      queryClient.invalidateQueries("createUser");
+    onSettled: async () => {
+      try {
+        await AsyncStorage.setItem("@username", username);
+        navigation.navigate("Home");
+      } catch (error) {
+        console.log({ error });
+      }
     },
   });
 
