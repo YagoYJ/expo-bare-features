@@ -1,30 +1,33 @@
+import { AxiosError } from "axios";
 import React, { useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
+import { useMutation, useQuery } from "react-query";
 
 import { Header } from "../../components/Header";
 import { EditTaskProps, Task, TasksList } from "../../components/TasksList";
 import { TodoInput } from "../../components/TodoInput";
 
+import { createTodo } from "../../integration/Todo/createTodo";
+
+import { queryClient } from "../../services/queryClient";
+
 export function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const { mutate: createTodoMutate } = useMutation("createTodo", createTodo, {
+    onSuccess: (data) => {
+      console.log({ data });
+      // refetch()
+    },
+    onError: (error: AxiosError) => {
+      return Alert.alert("Error", error.message);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries("createTodo");
+    },
+  });
 
-  function handleAddTask(newTaskTitle: string) {
-    const taskAlreadyAdded = tasks.find((task) => task.title === newTaskTitle);
-
-    if (taskAlreadyAdded)
-      return Alert.alert(
-        "Task já cadastrada",
-        "Você não pode cadastrar uma task com o mesmo nome"
-      );
-
-    setTasks((oldTasks) => [
-      ...oldTasks,
-      {
-        id: new Date().getTime(),
-        done: false,
-        title: newTaskTitle,
-      },
-    ]);
+  async function handleAddTask(title: string) {
+    createTodoMutate({ title, username: "Yj" });
   }
 
   function handleToggleTaskDone(id: number) {

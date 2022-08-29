@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Box, Heading } from "native-base";
 import { useMutation } from "react-query";
-import { AxiosError } from "axios";
 
 import { MainButton } from "../../components/Form/MainButton";
 import { Form } from "../../components/Form/Form";
@@ -17,15 +16,15 @@ export function Login() {
   const navigation = useNavigation<StackScreen>();
   const [username, setUsername] = useState("");
 
-  const { mutate, isLoading } = useMutation(createUser, {
+  const { mutate, isLoading } = useMutation("createUser", createUser, {
     onSuccess: () => {
       navigation.navigate("Home");
     },
-    onError: (error: AxiosError) => {
+    onError: () => {
       navigation.navigate("Home");
     },
     onSettled: () => {
-      queryClient.invalidateQueries("create");
+      queryClient.invalidateQueries("createUser");
     },
   });
 
