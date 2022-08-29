@@ -1,13 +1,9 @@
 import { api } from "../../services/api";
 
-interface IRequest {
-  username: string;
-}
-
-export async function getTodos({ username }: IRequest) {
+export async function getTodos() {
   const { data: response } = await api.get("todos", {
     headers: {
-      username,
+      username: "Yj",
     },
   });
 

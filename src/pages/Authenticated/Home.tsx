@@ -14,15 +14,14 @@ import { toggleTodoDone } from "../../integration/Todo/toggleTodoDone";
 import { updateTodo } from "../../integration/Todo/updateTodo";
 
 import { queryClient } from "../../services/queryClient";
+import { Box, Skeleton, Stack, Text } from "native-base";
 
 export function Home() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-
   const {
-    data: tasksData,
+    data: tasks,
     isFetching,
     refetch: refetchTodos,
-  } = useQuery("getTodos", () => getTodos({ username: "Yj" }));
+  } = useQuery("getTodos", getTodos);
 
   const { mutate: createTodoMutate } = useMutation("createTodo", createTodo, {
     onSuccess: () => {
@@ -77,11 +76,15 @@ export function Home() {
   });
 
   async function handleAddTask(title: string) {
-    createTodoMutate({ title, username: "Yj" });
+    createTodoMutate({ title });
   }
 
   function handleToggleTaskDone(id: string) {
-    toggleTodoDoneMutate({ taskId: id, username: "Yj" });
+    toggleTodoDoneMutate({ id });
+  }
+
+  function handleEditTask({ taskId, newTitle }: EditTaskProps) {
+    updateTodoMutate({ taskId, newTitle });
   }
 
   function handleRemoveTask(id: string) {
@@ -94,28 +97,36 @@ export function Home() {
       {
         text: "Sim",
         onPress: () => {
-          deleteTodoMutate({ taskId: id, username: "Yj" });
+          deleteTodoMutate({ taskId: id });
         },
       },
     ]);
   }
 
-  function handleEditTask({ taskId, newTitle }: EditTaskProps) {
-    updateTodoMutate({ taskId, newTitle, username: "Yj" });
-  }
-
   return (
     <View style={styles.container}>
-      <Header tasksCounter={tasks.length} />
+      <Header tasksCounter={tasks ? tasks.length : 0} />
 
       <TodoInput addTask={handleAddTask} />
 
-      <TasksList
-        tasks={tasks}
-        toggleTaskDone={handleToggleTaskDone}
-        removeTask={handleRemoveTask}
-        editTask={handleEditTask}
-      />
+      {isFetching ? (
+        <Stack space={4}>
+          <Skeleton h="70px" px="24px" />
+          <Skeleton h="70px" px="24px" />
+          <Skeleton h="70px" px="24px" />
+        </Stack>
+      ) : tasks && tasks.length > 0 ? (
+        <TasksList
+          tasks={tasks}
+          toggleTaskDone={handleToggleTaskDone}
+          removeTask={handleRemoveTask}
+          editTask={handleEditTask}
+        />
+      ) : (
+        <Box px="24px" mt="5">
+          <Text>No tasks created</Text>
+        </Box>
+      )}
     </View>
   );
 }
