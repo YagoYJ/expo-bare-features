@@ -1,35 +1,41 @@
 import React, { useState } from "react";
-import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Box, Heading, Icon, Pressable } from "native-base";
+import { Box, Heading } from "native-base";
+import { useMutation } from "react-query";
+import { AxiosError } from "axios";
 
 import { MainButton } from "../../components/Form/MainButton";
 import { Form } from "../../components/Form/Form";
 import { MainInput } from "../../components/Form/MainInput";
 
 import { StackScreen } from "../../types/stack.navigation";
+import { queryClient } from "../../services/queryClient";
 
-type FormData = {
-  login: string;
-  password: string;
-};
+import { createUser } from "../../integration/Login/createUser";
 
 export function Login() {
   const navigation = useNavigation<StackScreen>();
-  const [formValues, setFormValues] = useState<FormData>({
-    login: "",
-    password: "",
-  });
-  const [formErrors, setFormErrors] = useState<FormData>({
-    login: "",
-    password: "",
+  const [username, setUsername] = useState("");
+
+  const { mutate, isLoading } = useMutation(createUser, {
+    onSuccess: () => {
+      navigation.navigate("Home");
+    },
+    onError: (error: AxiosError) => {
+      navigation.navigate("Home");
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries("create");
+    },
   });
 
-  const [passwordIsVisible, setPasswordIsVisible] = useState(false);
+  function onSubmit(data: string) {
+    const user = {
+      name: data,
+      username: data,
+    };
 
-  function handleSubmit() {
-    console.log({ formValues });
-    navigation.navigate("Home");
+    mutate(user);
   }
 
   return (
@@ -38,50 +44,19 @@ export function Login() {
         <Heading mb="3">Login</Heading>
 
         <MainInput
-          label="Username or Email"
-          placeholder="YagoYJ"
-          value={formValues.login}
-          error={formErrors.login}
-          handleChangeText={(value) =>
-            setFormValues({ ...formValues, login: value })
-          }
-          InputLeftElement={
-            <Icon as={<MaterialIcons name="person" />} mx={2} />
-          }
-          required
-        />
-
-        <MainInput
-          label="Password"
-          placeholder="Minimum 8 digits"
-          value={formValues.password}
-          error={formErrors.password}
-          handleChangeText={(value) =>
-            setFormValues({ ...formValues, password: value })
-          }
-          onSubmitEditing={handleSubmit}
-          type={passwordIsVisible ? "text" : "password"}
-          InputRightElement={
-            <Pressable onPress={() => setPasswordIsVisible(!passwordIsVisible)}>
-              <Icon
-                as={
-                  <MaterialIcons
-                    name={passwordIsVisible ? "visibility" : "visibility-off"}
-                  />
-                }
-                size={5}
-                mr="2"
-                color="muted.400"
-              />
-            </Pressable>
-          }
+          label="Username"
+          placeholder="YJKiller00"
+          value={username}
+          handleChangeText={(value) => setUsername(value)}
+          onSubmitEditing={() => onSubmit(username)}
           required
         />
 
         <MainButton
           text="Entrar"
-          handlePress={handleSubmit}
+          handlePress={() => onSubmit(username)}
           bgColor="green.600"
+          isDisabled={isLoading || !!!username.trim()}
         />
       </Form>
     </Box>
