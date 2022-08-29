@@ -8,15 +8,22 @@ import { EditTaskProps, Task, TasksList } from "../../components/TasksList";
 import { TodoInput } from "../../components/TodoInput";
 
 import { createTodo } from "../../integration/Todo/createTodo";
+import { getTodos } from "../../integration/Todo/getTodos";
 
 import { queryClient } from "../../services/queryClient";
 
 export function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
+
+  const {
+    data: tasksData,
+    isFetching,
+    refetch: refetchTodos,
+  } = useQuery("getTodos", () => getTodos({ username: "Yj" }));
+
   const { mutate: createTodoMutate } = useMutation("createTodo", createTodo, {
     onSuccess: (data) => {
-      console.log({ data });
-      // refetch()
+      refetchTodos();
     },
     onError: (error: AxiosError) => {
       return Alert.alert("Error", error.message);
