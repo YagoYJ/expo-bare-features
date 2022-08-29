@@ -9,6 +9,7 @@ import { TodoInput } from "../../components/TodoInput";
 
 import { createTodo } from "../../integration/Todo/createTodo";
 import { getTodos } from "../../integration/Todo/getTodos";
+import { toggleTodoDone } from "../../integration/Todo/toggleTodoDone";
 import { updateTodo } from "../../integration/Todo/updateTodo";
 
 import { queryClient } from "../../services/queryClient";
@@ -46,29 +47,31 @@ export function Home() {
     },
   });
 
+  const { mutate: toggleTodoDoneMutate } = useMutation(
+    "toggleTodoDone",
+    toggleTodoDone,
+    {
+      onSuccess: () => {
+        refetchTodos();
+      },
+      onError: (error: AxiosError) => {
+        return Alert.alert("Error", error.message);
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries("toggleTodoDone");
+      },
+    }
+  );
+
   async function handleAddTask(title: string) {
     createTodoMutate({ title, username: "Yj" });
   }
 
-  function handleToggleTaskDone(id: number) {
-    const currentTask = tasks.find((task) => task.id === id);
-
-    if (!currentTask) return;
-
-    currentTask.done = !currentTask.done;
-
-    const newTasksArray = tasks.map((task) => {
-      if (task.id === id) {
-        return currentTask;
-      } else {
-        return task;
-      }
-    });
-
-    setTasks(newTasksArray);
+  function handleToggleTaskDone(id: string) {
+    toggleTodoDoneMutate({ taskId: id, username: "Yj" });
   }
 
-  function handleRemoveTask(id: number) {
+  function handleRemoveTask(id: string) {
     Alert.alert("Remover item", "Tem certeza que deseja remover esse item?", [
       {
         text: "Não",

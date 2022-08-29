@@ -16,9 +16,9 @@ import editIcon from "../assets/icons/edit/edit.png";
 interface TaskItemProps {
   index: number;
   task: Task;
-  toggleTaskDone: (id: number) => void;
-  removeTask: (id: number) => void;
-  editTask: ({ taskId, taskNewTitle }: EditTaskProps) => void;
+  toggleTaskDone: (id: string) => void;
+  removeTask: (id: string) => void;
+  editTask: ({ taskId, newTitle }: EditTaskProps) => void;
 }
 
 export function TaskItem({
@@ -47,7 +47,7 @@ export function TaskItem({
       setTitleUpdated(task.title);
       setIsEditing(false);
     } else {
-      editTask({ taskId: task.id, taskNewTitle: titleUpdated });
+      editTask({ taskId: task.id, newTitle: titleUpdated });
       setIsEditing(false);
     }
   }

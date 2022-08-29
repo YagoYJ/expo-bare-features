@@ -1,7 +1,7 @@
 import { api } from "../../services/api";
 
 interface IRequest {
-  taskId: number;
+  taskId: string;
   newTitle: string;
   username: string;
 }

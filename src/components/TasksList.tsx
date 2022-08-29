@@ -5,20 +5,20 @@ import { ItemWrapper } from "./ItemWrapper";
 import { TaskItem } from "./TaskItem";
 
 export interface Task {
-  id: number;
+  id: string;
   title: string;
   done: boolean;
 }
 
 export interface EditTaskProps {
-  taskId: number;
+  taskId: string;
   newTitle: string;
 }
 
 interface TasksListProps {
   tasks: Task[];
-  toggleTaskDone: (id: number) => void;
-  removeTask: (id: number) => void;
+  toggleTaskDone: (id: string) => void;
+  removeTask: (id: string) => void;
   editTask: ({ taskId, newTitle }: EditTaskProps) => void;
 }
 
