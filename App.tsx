@@ -1,5 +1,3 @@
-import React, { useCallback, useState } from "react";
-
 import { NativeBaseProvider } from "native-base";
 import { QueryClientProvider } from "react-query";
 

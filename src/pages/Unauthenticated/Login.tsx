@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Box, Heading } from "native-base";
 import { useMutation } from "react-query";
@@ -9,7 +9,6 @@ import { Form } from "../../components/Form/Form";
 import { MainInput } from "../../components/Form/MainInput";
 
 import { StackScreen } from "../../types/stack.navigation";
-import { queryClient } from "../../services/queryClient";
 
 import { createUser } from "../../integration/Login/createUser";
 
@@ -17,13 +16,29 @@ export function Login() {
   const navigation = useNavigation<StackScreen>();
   const [username, setUsername] = useState("");
 
+  async function verifyUser() {
+    try {
+      const value = await AsyncStorage.getItem("@username");
+
+      if (value !== null) {
+        return navigation.navigate("Home");
+      }
+    } catch (error) {
+      // console.log({ error });
+    }
+  }
+
+  useEffect(() => {
+    verifyUser();
+  }, []);
+
   const { mutate, isLoading } = useMutation("createUser", createUser, {
     onSuccess: async () => {
       try {
         await AsyncStorage.setItem("@username", username);
         navigation.navigate("Home");
       } catch (error) {
-        console.log({ error });
+        // console.log({ error });
       }
     },
     onError: () => {
@@ -34,7 +49,7 @@ export function Login() {
         await AsyncStorage.setItem("@username", username);
         navigation.navigate("Home");
       } catch (error) {
-        console.log({ error });
+        // console.log({ error });
       }
     },
   });

@@ -2,9 +2,12 @@ import { AxiosError } from "axios";
 import React, { useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import { useMutation, useQuery } from "react-query";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
+import { Box, Skeleton, Stack, Text } from "native-base";
 
 import { Header } from "../../components/Header";
-import { EditTaskProps, Task, TasksList } from "../../components/TasksList";
+import { EditTaskProps, TasksList } from "../../components/TasksList";
 import { TodoInput } from "../../components/TodoInput";
 
 import { createTodo } from "../../integration/Todo/createTodo";
@@ -14,9 +17,11 @@ import { toggleTodoDone } from "../../integration/Todo/toggleTodoDone";
 import { updateTodo } from "../../integration/Todo/updateTodo";
 
 import { queryClient } from "../../services/queryClient";
-import { Box, Skeleton, Stack, Text } from "native-base";
+
+import { StackScreen } from "../../types/stack.navigation";
 
 export function Home() {
+  const navigation = useNavigation<StackScreen>();
   const {
     data: tasks,
     isFetching,
@@ -28,7 +33,10 @@ export function Home() {
       refetchTodos();
     },
     onError: (error: AxiosError) => {
-      return Alert.alert("Error", error.message);
+      AsyncStorage.clear();
+
+      Alert.alert("Error", error.message);
+      return navigation.navigate("Login");
     },
     onSettled: () => {
       queryClient.invalidateQueries("createTodo");
@@ -40,7 +48,10 @@ export function Home() {
       refetchTodos();
     },
     onError: (error: AxiosError) => {
-      return Alert.alert("Error", error.message);
+      AsyncStorage.clear();
+
+      Alert.alert("Error", error.message);
+      return navigation.navigate("Login");
     },
     onSettled: () => {
       queryClient.invalidateQueries("updateTodo");
@@ -55,7 +66,10 @@ export function Home() {
         refetchTodos();
       },
       onError: (error: AxiosError) => {
-        return Alert.alert("Error", error.message);
+        AsyncStorage.clear();
+
+        Alert.alert("Error", error.message);
+        return navigation.navigate("Login");
       },
       onSettled: () => {
         queryClient.invalidateQueries("toggleTodoDone");
@@ -68,7 +82,10 @@ export function Home() {
       refetchTodos();
     },
     onError: (error: AxiosError) => {
-      return Alert.alert("Error", error.message);
+      AsyncStorage.clear();
+
+      Alert.alert("Error", error.message);
+      return navigation.navigate("Login");
     },
     onSettled: () => {
       queryClient.invalidateQueries("deleteTodo");

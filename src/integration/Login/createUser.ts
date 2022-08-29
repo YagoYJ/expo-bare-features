@@ -1,5 +1,4 @@
 import { Alert } from "react-native";
-
 import { api } from "../../services/api";
 
 interface IRequest {

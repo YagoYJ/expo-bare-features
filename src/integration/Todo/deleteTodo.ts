@@ -1,3 +1,5 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { api } from "../../services/api";
 
 interface IRequest {
@@ -6,7 +8,7 @@ interface IRequest {
 
 export async function deleteTodo({ taskId }: IRequest) {
   const { data: response } = await api.delete(`/todos/${taskId}`, {
-    headers: { username: "Yj" },
+    headers: { username: await AsyncStorage.getItem("@username") },
   });
 
   return response;

@@ -1,3 +1,5 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { api } from "../../services/api";
 
 interface IRequest {
@@ -5,22 +7,16 @@ interface IRequest {
 }
 
 export async function toggleTodoDone({ id }: IRequest) {
-  // const { data: response } =
-  await api
-    .patch(
-      `todos/${id}/done`,
-      {},
-      {
-        headers: {
-          username: "Yj",
-        },
-      }
-    )
-    .then((res) => {
-      console.log(JSON.stringify(res, null, 2));
-      return res;
-    })
-    .catch((err) => console.log(JSON.stringify(err, null, 2)));
+  const { data: response } = await api.patch(
+    `todos/${id}/done`,
+    {},
 
-  // return response;
+    {
+      headers: {
+        username: await AsyncStorage.getItem("@username"),
+      },
+    }
+  );
+
+  return response;
 }
