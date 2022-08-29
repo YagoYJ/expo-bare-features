@@ -12,14 +12,14 @@ export interface Task {
 
 export interface EditTaskProps {
   taskId: number;
-  taskNewTitle: string;
+  newTitle: string;
 }
 
 interface TasksListProps {
   tasks: Task[];
   toggleTaskDone: (id: number) => void;
   removeTask: (id: number) => void;
-  editTask: ({ taskId, taskNewTitle }: EditTaskProps) => void;
+  editTask: ({ taskId, newTitle }: EditTaskProps) => void;
 }
 
 export function TasksList({

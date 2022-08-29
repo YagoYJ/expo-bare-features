@@ -9,6 +9,7 @@ import { TodoInput } from "../../components/TodoInput";
 
 import { createTodo } from "../../integration/Todo/createTodo";
 import { getTodos } from "../../integration/Todo/getTodos";
+import { updateTodo } from "../../integration/Todo/updateTodo";
 
 import { queryClient } from "../../services/queryClient";
 
@@ -22,7 +23,7 @@ export function Home() {
   } = useQuery("getTodos", () => getTodos({ username: "Yj" }));
 
   const { mutate: createTodoMutate } = useMutation("createTodo", createTodo, {
-    onSuccess: (data) => {
+    onSuccess: () => {
       refetchTodos();
     },
     onError: (error: AxiosError) => {
@@ -30,6 +31,18 @@ export function Home() {
     },
     onSettled: () => {
       queryClient.invalidateQueries("createTodo");
+    },
+  });
+
+  const { mutate: updateTodoMutate } = useMutation("updateTodo", updateTodo, {
+    onSuccess: () => {
+      refetchTodos();
+    },
+    onError: (error: AxiosError) => {
+      return Alert.alert("Error", error.message);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries("updateTodo");
     },
   });
 
@@ -73,22 +86,8 @@ export function Home() {
     ]);
   }
 
-  function handleEditTask({ taskId, taskNewTitle }: EditTaskProps) {
-    const currentTask = tasks.find((task) => task.id === taskId);
-
-    if (!currentTask) return;
-
-    currentTask.title = taskNewTitle;
-
-    const newTasksArray = tasks.map((task) => {
-      if (task.id === taskId) {
-        return currentTask;
-      } else {
-        return task;
-      }
-    });
-
-    setTasks(newTasksArray);
+  function handleEditTask({ taskId, newTitle }: EditTaskProps) {
+    updateTodoMutate({ taskId, newTitle, username: "Yj" });
   }
 
   return (
