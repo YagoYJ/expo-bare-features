@@ -9,6 +9,7 @@ import { TodoInput } from "../../components/TodoInput";
 
 import { createTodo } from "../../integration/Todo/createTodo";
 import { getTodos } from "../../integration/Todo/getTodos";
+import { deleteTodo } from "../../integration/Todo/deleteTodo";
 import { toggleTodoDone } from "../../integration/Todo/toggleTodoDone";
 import { updateTodo } from "../../integration/Todo/updateTodo";
 
@@ -63,6 +64,18 @@ export function Home() {
     }
   );
 
+  const { mutate: deleteTodoMutate } = useMutation("deleteTodo", deleteTodo, {
+    onSuccess: () => {
+      refetchTodos();
+    },
+    onError: (error: AxiosError) => {
+      return Alert.alert("Error", error.message);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries("deleteTodo");
+    },
+  });
+
   async function handleAddTask(title: string) {
     createTodoMutate({ title, username: "Yj" });
   }
@@ -81,9 +94,7 @@ export function Home() {
       {
         text: "Sim",
         onPress: () => {
-          const newTasksArray = tasks.filter((task) => task.id !== id);
-
-          setTasks(newTasksArray);
+          deleteTodoMutate({ taskId: id, username: "Yj" });
         },
       },
     ]);
