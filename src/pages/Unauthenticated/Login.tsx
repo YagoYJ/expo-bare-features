@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Box, Heading } from "native-base";
+import { Box, Heading, Text } from "native-base";
 import { useMutation } from "react-query";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -11,6 +11,8 @@ import { MainInput } from "../../components/Form/MainInput";
 import { StackScreen } from "../../types/stack.navigation";
 
 import { createUser } from "../../integration/Login/createUser";
+
+import { envs } from "../../../environments";
 
 export function Login() {
   const navigation = useNavigation<StackScreen>();
@@ -84,6 +86,9 @@ export function Login() {
           isDisabled={isLoading || !!!username.trim()}
         />
       </Form>
+
+      <Text>Current Env: {process.env.CURRENT_ENV}</Text>
+      <Text>Ambiente: {envs.ENV_TEST}</Text>
     </Box>
   );
 }
