@@ -17,17 +17,9 @@ export interface EditTaskProps {
 
 interface TasksListProps {
   tasks: Task[];
-  toggleTaskDone: (id: string) => void;
-  removeTask: (id: string) => void;
-  editTask: ({ taskId, newTitle }: EditTaskProps) => void;
 }
 
-export function TasksList({
-  tasks,
-  toggleTaskDone,
-  removeTask,
-  editTask,
-}: TasksListProps) {
+export function TasksList({ tasks }: TasksListProps) {
   return (
     <FlatList
       data={tasks}
@@ -37,14 +29,7 @@ export function TasksList({
       renderItem={({ item, index }) => {
         return (
           <ItemWrapper>
-            <TaskItem
-              key={item.id}
-              index={index}
-              task={item}
-              toggleTaskDone={toggleTaskDone}
-              removeTask={removeTask}
-              editTask={editTask}
-            />
+            <TaskItem key={item.id} index={index} task={item} />
           </ItemWrapper>
         );
       }}

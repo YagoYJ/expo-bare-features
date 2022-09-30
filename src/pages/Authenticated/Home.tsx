@@ -1,130 +1,22 @@
-import { AxiosError } from "axios";
-import React, { useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
-import { useMutation, useQuery } from "react-query";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
+import { StyleSheet, View } from "react-native";
 import { Box, Skeleton, Stack, Text } from "native-base";
 
 import { Header } from "../../components/Header";
-import { EditTaskProps, TasksList } from "../../components/TasksList";
+import { TasksList } from "../../components/TasksList";
 import { TodoInput } from "../../components/TodoInput";
 
-import { createTodo } from "../../integration/Todo/createTodo";
-import { getTodos } from "../../integration/Todo/getTodos";
-import { deleteTodo } from "../../integration/Todo/deleteTodo";
-import { toggleTodoDone } from "../../integration/Todo/toggleTodoDone";
-import { updateTodo } from "../../integration/Todo/updateTodo";
-
-import { queryClient } from "../../services/queryClient";
-
-import { StackScreen } from "../../types/stack.navigation";
+import { useTodo } from "../../contexts/TodoContext";
 
 export function Home() {
-  const navigation = useNavigation<StackScreen>();
-  const {
-    data: tasks,
-    isFetching,
-    refetch: refetchTodos,
-  } = useQuery("getTodos", getTodos);
+  const { getTodos } = useTodo();
 
-  const { mutate: createTodoMutate } = useMutation("createTodo", createTodo, {
-    onSuccess: () => {
-      refetchTodos();
-    },
-    onError: (error: AxiosError) => {
-      AsyncStorage.clear();
-
-      Alert.alert("Error", error.message);
-      return navigation.navigate("Login");
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("createTodo");
-    },
-  });
-
-  const { mutate: updateTodoMutate } = useMutation("updateTodo", updateTodo, {
-    onSuccess: () => {
-      refetchTodos();
-    },
-    onError: (error: AxiosError) => {
-      AsyncStorage.clear();
-
-      Alert.alert("Error", error.message);
-      return navigation.navigate("Login");
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("updateTodo");
-    },
-  });
-
-  const { mutate: toggleTodoDoneMutate } = useMutation(
-    "toggleTodoDone",
-    toggleTodoDone,
-    {
-      onSuccess: () => {
-        refetchTodos();
-      },
-      onError: (error: AxiosError) => {
-        AsyncStorage.clear();
-
-        Alert.alert("Error", error.message);
-        return navigation.navigate("Login");
-      },
-      onSettled: () => {
-        queryClient.invalidateQueries("toggleTodoDone");
-      },
-    }
-  );
-
-  const { mutate: deleteTodoMutate } = useMutation("deleteTodo", deleteTodo, {
-    onSuccess: () => {
-      refetchTodos();
-    },
-    onError: (error: AxiosError) => {
-      AsyncStorage.clear();
-
-      Alert.alert("Error", error.message);
-      return navigation.navigate("Login");
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("deleteTodo");
-    },
-  });
-
-  async function handleAddTask(title: string) {
-    createTodoMutate({ title });
-  }
-
-  function handleToggleTaskDone(id: string) {
-    toggleTodoDoneMutate({ id });
-  }
-
-  function handleEditTask({ taskId, newTitle }: EditTaskProps) {
-    updateTodoMutate({ taskId, newTitle });
-  }
-
-  function handleRemoveTask(id: string) {
-    Alert.alert("Remover item", "Tem certeza que deseja remover esse item?", [
-      {
-        text: "Não",
-        style: "cancel",
-        onPress: () => {},
-      },
-      {
-        text: "Sim",
-        onPress: () => {
-          deleteTodoMutate({ taskId: id });
-        },
-      },
-    ]);
-  }
+  const { data: tasks, isFetching } = getTodos;
 
   return (
     <View style={styles.container}>
       <Header tasksCounter={tasks ? tasks.length : 0} />
 
-      <TodoInput addTask={handleAddTask} />
+      <TodoInput />
 
       {isFetching ? (
         <Stack space={4}>
@@ -133,12 +25,7 @@ export function Home() {
           <Skeleton h="70px" px="24px" />
         </Stack>
       ) : tasks && tasks.length > 0 ? (
-        <TasksList
-          tasks={tasks}
-          toggleTaskDone={handleToggleTaskDone}
-          removeTask={handleRemoveTask}
-          editTask={handleEditTask}
-        />
+        <TasksList tasks={tasks} />
       ) : (
         <Box px="24px" mt="5">
           <Text>No tasks created</Text>

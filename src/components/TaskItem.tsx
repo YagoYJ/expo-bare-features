@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Image,
   TouchableOpacity,
@@ -8,7 +8,9 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 
-import { EditTaskProps, Task } from "./TasksList";
+import { Task } from "./TasksList";
+
+import { useTodo } from "../contexts/TodoContext";
 
 import trashIcon from "../assets/icons/trash/trash.png";
 import editIcon from "../assets/icons/edit/edit.png";
@@ -16,20 +18,13 @@ import editIcon from "../assets/icons/edit/edit.png";
 interface TaskItemProps {
   index: number;
   task: Task;
-  toggleTaskDone: (id: string) => void;
-  removeTask: (id: string) => void;
-  editTask: ({ taskId, newTitle }: EditTaskProps) => void;
 }
 
-export function TaskItem({
-  index,
-  task,
-  editTask,
-  removeTask,
-  toggleTaskDone,
-}: TaskItemProps) {
+export function TaskItem({ index, task }: TaskItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [titleUpdated, setTitleUpdated] = useState(task.title);
+
+  const { toggleTodoDone, deleteTodo, updateTodo } = useTodo();
 
   const textInputRef = useRef<TextInput>(null);
 
@@ -47,7 +42,7 @@ export function TaskItem({
       setTitleUpdated(task.title);
       setIsEditing(false);
     } else {
-      editTask({ taskId: task.id, newTitle: titleUpdated });
+      updateTodo({ taskId: task.id, newTitle: titleUpdated });
       setIsEditing(false);
     }
   }
@@ -69,7 +64,7 @@ export function TaskItem({
           testID={`button-${index}`}
           activeOpacity={0.7}
           style={styles.taskButton}
-          onPress={() => toggleTaskDone(task.id)}
+          onPress={() => toggleTodoDone({ taskId: task.id })}
           //TODO - use onPress (toggle task) prop
         >
           <View
@@ -114,7 +109,7 @@ export function TaskItem({
 
             <TouchableOpacity
               disabled={isEditing}
-              onPress={() => removeTask(task.id)}
+              onPress={() => deleteTodo({ taskId: task.id })}
             >
               <Image
                 source={trashIcon}
