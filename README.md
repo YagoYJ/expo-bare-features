@@ -385,6 +385,17 @@ Assim as envs vão ficar dinâmicas de acordo com o ambiente, mas para definir o
   }
 }
 ```
+
+Para criarmos nossas variáveis de ambiente de produção, o processo é um pouco diferente, precisamos somente rodar o comando abaixo para elas ficarem salvas na conta do Expo como **Secret Keys**:
+
+```cmd
+eas secret:create --scope project --name SECRET_NAME --value secretvalue
+```
+
+Para verificar as chaves cadastradas:
+```cmd
+eas secret:list
+```
    
 Para ver outras configurações, acesse: [https://docs.expo.dev/build/setup/](https://docs.expo.dev/build/setup/)
 
