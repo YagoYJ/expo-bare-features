@@ -8,6 +8,7 @@
 - Native Base
 - React Query
 - Variáveis de Ambiente (.env)
+- Json Server
 
 ### Expo Bare Workflow
 
@@ -413,3 +414,53 @@ No arquivo **package.json** vamos criar um script para inicializar o projeto com
 ```
 
 Agora basta rodar o projeto com as configurações que desejar.
+
+### Json Server
+
+O Json Server é uma biblioteca para simular uma API, ela é muito boa quando sua API está sendo feita durante o desenvolvimento da aplicação ou vai ser feita futuramente, essa lib é utilizada apenas para nos ajudar no desenvolvimento.
+
+Instalação:
+
+```cmd
+yarn add json-server -D
+```
+ou
+```cmd
+npm install json-server --save-dev
+```
+
+Crie uma pasta **database** dentro de **src** e crie um arquivo **db.json** com algum conteúdo, simulando um Banco de dados:
+
+```json
+{
+  "todos": [
+    {
+      "id": "1",
+      "title": "Fazer almoço",
+      "done": false
+    }
+  ]
+}
+```
+
+No **package.json**, vamos adicionar um novo script:
+
+```json
+"api": "json-server --watch ./src/database/db.json -p 3333",
+```
+
+Se a gente estivesse utilizando uma aplicação web, já estaria tudo configurado, mas como vamos utilizar nosso celular, precisamos acessar nosso servidor fake de uma forma diferente.
+
+Primeiramente vamos rodar o seguinte comando, aperte **y** para instalar as dependencias necessárias:
+
+```cmd
+npx ngrok http 3333
+```
+
+Isso vai permitir que acessemos nossa API remotamente. Após rodar o comando, irá aparecer as seguintes informações:
+
+![Ngrok Result](src/assets/documentation/ngrok-result.jpeg)
+
+Agora só pegar o link que aparece em **Forqarding** e utilizar ele como o baseUrl
+
+Documentação completa: [https://github.com/typicode/json-server](https://github.com/typicode/json-server)
