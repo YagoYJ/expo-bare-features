@@ -1,26 +1,8 @@
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-let username = "";
-async () => {
-  username = await AsyncStorage.getItem("@username");
-};
 
 const api = axios.create({
-  headers: {
-    username,
-  },
-  baseURL: "http://192.168.18.5:3333",
+  baseURL: "https://3fc5-2804-248-efff-9b00-ccfb-7190-c565-f951.ngrok.io/",
+  headers: { accept: "application/json" },
 });
-
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  async () => {
-    AsyncStorage.clear();
-    // Updates.reloadAsync()
-  }
-);
 
 export { api };

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Box, Heading, Text } from "native-base";
 import { useMutation } from "react-query";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { MainButton } from "../../components/Form/MainButton";
 import { Form } from "../../components/Form/Form";
@@ -20,13 +19,13 @@ export function Login() {
 
   async function verifyUser() {
     try {
-      const value = await AsyncStorage.getItem("@username");
+      const value = "yagoyj";
 
       if (value !== null) {
         return navigation.navigate("Home");
       }
     } catch (error) {
-      // console.log({ error });
+      console.log({ error });
     }
   }
 
@@ -37,10 +36,9 @@ export function Login() {
   const { mutate, isLoading } = useMutation("createUser", createUser, {
     onSuccess: async () => {
       try {
-        await AsyncStorage.setItem("@username", username);
         navigation.navigate("Home");
       } catch (error) {
-        // console.log({ error });
+        console.log({ error });
       }
     },
     onError: () => {
@@ -48,10 +46,9 @@ export function Login() {
     },
     onSettled: async () => {
       try {
-        await AsyncStorage.setItem("@username", username);
         navigation.navigate("Home");
       } catch (error) {
-        // console.log({ error });
+        console.log({ error });
       }
     },
   });
