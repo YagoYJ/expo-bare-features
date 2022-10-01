@@ -6,15 +6,18 @@ import { AppProvider } from "./src/contexts";
 import { queryClient } from "./src/services/queryClient";
 
 import { Routes } from "./src/routes/index.routes";
+import { NavigationContainer } from "@react-navigation/native";
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AppProvider>
-        <NativeBaseProvider>
-          <Routes />
-        </NativeBaseProvider>
-      </AppProvider>
+      <NavigationContainer>
+        <AppProvider>
+          <NativeBaseProvider>
+            <Routes />
+          </NativeBaseProvider>
+        </AppProvider>
+      </NavigationContainer>
     </QueryClientProvider>
   );
 }

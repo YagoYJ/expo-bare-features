@@ -118,7 +118,6 @@ Antes de configurar a navegação, vamos organizar nosso projeto.
 2. Dentro de **src**, crie uma pasta **routes**, e dentro dela crie o arquivo **index.routes.tsx**. Nele vamos colocar o seguinte código:
 
 ```tsx
-import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { PageExample1 } from "../pages/PageExample1";
 import { PageExample2 } from "../pages/PageExample2";
