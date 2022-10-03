@@ -40,6 +40,7 @@ const TodoProvider = ({ children }: PropsWithChildren): ReactElement => {
       const { data: response } = await api.post("/todos", {
         title,
         deadline: "2022-08-29",
+        done: false,
       });
 
       return response;
@@ -87,7 +88,9 @@ const TodoProvider = ({ children }: PropsWithChildren): ReactElement => {
 
   const handleToggleTodoDone = useCallback(
     async ({ taskId }: IRequestToggleTodoDone) => {
-      const { data: response } = await api.patch(`todos/${taskId}/done`, {});
+      const { data: response } = await api.patch(`todos/${taskId}`, {
+        done: true,
+      });
 
       return response;
     },

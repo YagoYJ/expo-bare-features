@@ -6,6 +6,7 @@
     "dev": "set CURRENT_ENV=dev&& npx expo start --clear",
     "prod": "set CURRENT_ENV=prod&& npx expo start --clear",
     "api": "json-server --watch ./src/database/db.json -p 3333",
+    "exposeApi": "npx ngrok http 3333",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
@@ -44,6 +45,7 @@
     "@types/react-native-vector-icons": "^6.4.11",
     "@types/react-navigation": "^3.4.0",
     "@types/react-query": "^1.2.9",
+    "@types/uuid": "^8.3.4",
     "json-server": "^0.17.0"
   },
   "private": true

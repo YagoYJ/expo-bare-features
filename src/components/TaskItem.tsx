@@ -65,6 +65,7 @@ export function TaskItem({ index, task }: TaskItemProps) {
           activeOpacity={0.7}
           style={styles.taskButton}
           onPress={() => toggleTodoDone({ taskId: task.id })}
+          disabled={task.done}
           //TODO - use onPress (toggle task) prop
         >
           <View

@@ -461,6 +461,6 @@ Isso vai permitir que acessemos nossa API remotamente. Após rodar o comando, ir
 
 ![Ngrok Result](src/assets/documentation/ngrok-result.jpeg)
 
-Agora só pegar o link que aparece em **Forqarding** e utilizar ele como o baseUrl
+Agora só pegar o link que aparece em **Forwarding** e utilizar ele como o baseUrl
 
 Documentação completa: [https://github.com/typicode/json-server](https://github.com/typicode/json-server)
