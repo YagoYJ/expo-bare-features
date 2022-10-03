@@ -2,17 +2,11 @@ import {
   createContext,
   PropsWithChildren,
   ReactElement,
-  useCallback,
   useContext,
 } from "react";
-import { Alert } from "react-native";
 import { useMutation, useQuery } from "react-query";
-import { useNavigation } from "@react-navigation/native";
 
 import { api } from "../../services/api";
-import { queryClient } from "../../services/queryClient";
-
-import { StackScreen } from "../../types/stack.navigation";
 
 import {
   IRequestCreateTodo,
@@ -25,17 +19,14 @@ import {
 const TodoContext = createContext<TodoContextData>({} as TodoContextData);
 
 const TodoProvider = ({ children }: PropsWithChildren): ReactElement => {
-  const navigation = useNavigation<StackScreen>();
-
-  const handleGetTodos = useCallback(async () => {
+  const getTodos = useQuery("getTodos", async () => {
     const { data: response } = await api.get("todos", {});
 
     return response;
-  }, []);
+  });
 
-  const getTodos = useQuery("getTodos", handleGetTodos);
-
-  const handleCreateTodo = useCallback(
+  const { mutate: createTodo } = useMutation(
+    "createTodo",
     async ({ title }: IRequestCreateTodo) => {
       const { data: response } = await api.post("/todos", {
         title,
@@ -44,24 +35,11 @@ const TodoProvider = ({ children }: PropsWithChildren): ReactElement => {
       });
 
       return response;
-    },
-    []
+    }
   );
 
-  const { mutate: createTodo } = useMutation("createTodo", handleCreateTodo, {
-    onSuccess: () => {
-      getTodos.refetch();
-    },
-    onError: () => {
-      Alert.alert("Error", "Não foi possível criar o Todo");
-      return navigation.navigate("Login");
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("createTodo");
-    },
-  });
-
-  const handleUpdateTodo = useCallback(
+  const { mutate: updateTodo } = useMutation(
+    "updateTodo",
     async ({ taskId, newTitle }: IRequestUpdateTodo) => {
       const { data: response } = await api.put(`/todos/${taskId}`, {
         title: newTitle,
@@ -69,72 +47,28 @@ const TodoProvider = ({ children }: PropsWithChildren): ReactElement => {
       });
 
       return response;
-    },
-    []
+    }
   );
 
-  const { mutate: updateTodo } = useMutation("updateTodo", handleUpdateTodo, {
-    onSuccess: () => {
-      getTodos.refetch();
-    },
-    onError: () => {
-      Alert.alert("Error", "Não foi possível atualizar o Todo");
-      return navigation.navigate("Login");
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("updateTodo");
-    },
-  });
-
-  const handleToggleTodoDone = useCallback(
+  const { mutate: toggleTodoDone } = useMutation(
+    "toggleTodoDone",
     async ({ taskId }: IRequestToggleTodoDone) => {
       const { data: response } = await api.patch(`todos/${taskId}`, {
         done: true,
       });
 
       return response;
-    },
-    []
-  );
-
-  const { mutate: toggleTodoDone } = useMutation(
-    "toggleTodoDone",
-    handleToggleTodoDone,
-    {
-      onSuccess: () => {
-        getTodos.refetch();
-      },
-      onError: () => {
-        Alert.alert("Error", "Não foi possível atualizar o Todo");
-        return navigation.navigate("Login");
-      },
-      onSettled: () => {
-        queryClient.invalidateQueries("toggleTodoDone");
-      },
     }
   );
 
-  const handleDeleteTodo = useCallback(
+  const { mutate: deleteTodo } = useMutation(
+    "deleteTodo",
     async ({ taskId }: IRequestDeleteTodo) => {
       const { data: response } = await api.delete(`/todos/${taskId}`);
 
       return response;
-    },
-    []
+    }
   );
-
-  const { mutate: deleteTodo } = useMutation("deleteTodo", handleDeleteTodo, {
-    onSuccess: () => {
-      getTodos.refetch();
-    },
-    onError: () => {
-      Alert.alert("Error", "Não foi possível apagar o Todo");
-      return navigation.navigate("Login");
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries("deleteTodo");
-    },
-  });
 
   return (
     <TodoContext.Provider
