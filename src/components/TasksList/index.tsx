@@ -1,8 +1,8 @@
 import React from "react";
 import { FlatList } from "react-native";
 
-import { ItemWrapper } from "./ItemWrapper";
-import { TaskItem } from "./TaskItem";
+import { ItemWrapper } from "../ItemWrapper";
+import { TaskItem } from "../TaskItem";
 
 export interface Task {
   id: number;

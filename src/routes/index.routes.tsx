@@ -1,7 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { Login } from "../pages/Unauthenticated/Login";
-import { Home } from "../pages/Authenticated/Home";
+import { Home } from "../pages/Home";
 
 import { RootStackParamList } from "../types/stack.navigation";
 
@@ -15,7 +14,6 @@ export function Routes() {
         headerShown: false,
       }}
     >
-      {/* <Stack.Screen name="Login" component={Login} /> */}
       <Stack.Screen name="Home" component={Home} />
     </Stack.Navigator>
   );
