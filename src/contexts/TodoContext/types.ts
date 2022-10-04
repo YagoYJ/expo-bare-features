@@ -14,14 +14,14 @@ export type IRequestCreateTodo = {
 };
 
 export type IRequestUpdateTodo = {
-  taskId: string;
+  taskId: number;
   newTitle: string;
 };
 
 export type IRequestToggleTodoDone = {
-  taskId: string;
+  taskId: number;
 };
 
 export type IRequestDeleteTodo = {
-  taskId: string;
+  taskId: number;
 };

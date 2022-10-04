@@ -5,7 +5,7 @@ import { ItemWrapper } from "./ItemWrapper";
 import { TaskItem } from "./TaskItem";
 
 export interface Task {
-  id: string;
+  id: number;
   title: string;
   done: boolean;
 }

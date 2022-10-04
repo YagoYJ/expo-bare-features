@@ -4,6 +4,7 @@ import {
   ReactElement,
   useContext,
 } from "react";
+import { Alert } from "react-native";
 import { useMutation, useQuery } from "react-query";
 
 import { api } from "../../services/api";
@@ -20,53 +21,81 @@ const TodoContext = createContext<TodoContextData>({} as TodoContextData);
 
 const TodoProvider = ({ children }: PropsWithChildren): ReactElement => {
   const getTodos = useQuery("getTodos", async () => {
-    const { data: response } = await api.get("todos", {});
+    try {
+      const { data: response } = await api.get("todos", {});
 
-    return response;
+      return response;
+    } catch (err: unknown) {
+      Alert.alert("Erro ao fazer a requisição", JSON.stringify(err));
+    }
   });
 
   const { mutate: createTodo } = useMutation(
     "createTodo",
     async ({ title }: IRequestCreateTodo) => {
-      const { data: response } = await api.post("/todos", {
-        title,
-        deadline: "2022-08-29",
-        done: false,
-      });
+      try {
+        const { data: response } = await api.post("/todos", {
+          title,
+          deadline: "2022-08-29",
+          done: false,
+        });
 
-      return response;
+        return response;
+      } catch (err: unknown) {
+        Alert.alert("Erro ao fazer a requisição", JSON.stringify(err));
+      } finally {
+        getTodos.refetch();
+      }
     }
   );
 
   const { mutate: updateTodo } = useMutation(
     "updateTodo",
     async ({ taskId, newTitle }: IRequestUpdateTodo) => {
-      const { data: response } = await api.put(`/todos/${taskId}`, {
-        title: newTitle,
-        deadline: "2022-08-29",
-      });
+      try {
+        const { data: response } = await api.put(`/todos/${taskId}`, {
+          title: newTitle,
+          deadline: "2022-08-29",
+        });
 
-      return response;
+        return response;
+      } catch (err: unknown) {
+        Alert.alert("Erro ao fazer a requisição", JSON.stringify(err));
+      } finally {
+        getTodos.refetch();
+      }
     }
   );
 
   const { mutate: toggleTodoDone } = useMutation(
     "toggleTodoDone",
     async ({ taskId }: IRequestToggleTodoDone) => {
-      const { data: response } = await api.patch(`todos/${taskId}`, {
-        done: true,
-      });
+      try {
+        const { data: response } = await api.patch(`todos/${taskId}`, {
+          done: true,
+        });
 
-      return response;
+        return response;
+      } catch (err: unknown) {
+        Alert.alert("Erro ao fazer a requisição", JSON.stringify(err));
+      } finally {
+        getTodos.refetch();
+      }
     }
   );
 
   const { mutate: deleteTodo } = useMutation(
     "deleteTodo",
     async ({ taskId }: IRequestDeleteTodo) => {
-      const { data: response } = await api.delete(`/todos/${taskId}`);
+      try {
+        const { data: response } = await api.delete(`/todos/${taskId}`);
 
-      return response;
+        return response;
+      } catch (err: unknown) {
+        Alert.alert("Erro ao fazer a requisição", JSON.stringify(err));
+      } finally {
+        getTodos.refetch();
+      }
     }
   );
 
