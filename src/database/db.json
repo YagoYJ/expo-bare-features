@@ -3,7 +3,8 @@
     {
       "title": "Task 2 aman",
       "deadline": "2022-08-29",
-      "id": 1
+      "id": 1,
+      "done": true
     },
     {
       "title": "Task 1",
@@ -20,7 +21,7 @@
     {
       "title": "Smmsms",
       "deadline": "2022-08-29",
-      "done": false,
+      "done": true,
       "id": 4
     },
     {
