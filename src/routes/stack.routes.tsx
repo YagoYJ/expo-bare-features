@@ -12,14 +12,22 @@ export function StackRoutes() {
   const Stack = createNativeStackNavigator<OthersRoutesProps>();
 
   return (
-    <Stack.Navigator
-      initialRouteName="Features"
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="Features" component={Features} />
-      <Stack.Screen name="FormExample" component={FormExample} />
+    <Stack.Navigator initialRouteName="Features">
+      <Stack.Screen
+        name="Features"
+        component={Features}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="FormExample"
+        component={FormExample}
+        options={{
+          headerTitle: "Form Example",
+          headerBackTitle: "Go Back",
+        }}
+      />
     </Stack.Navigator>
   );
 }
