@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 
 import { Home } from "../screens/Home";
-import { Others } from "../screens/Others";
+import { StackRoutes } from "./stack.routes";
 
 export function TabRoutes() {
   const Tab = createBottomTabNavigator();
@@ -27,7 +27,7 @@ export function TabRoutes() {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Others" component={Others} />
+      <Tab.Screen name="Others" component={StackRoutes} />
     </Tab.Navigator>
   );
 }

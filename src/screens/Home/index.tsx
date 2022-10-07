@@ -14,7 +14,7 @@ export function Home() {
 
   return (
     <Box style={styles.container}>
-      <Header />
+      <Header title="CRUD - Todo" />
 
       <TodoInput />
 

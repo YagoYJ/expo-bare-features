@@ -1,10 +1,14 @@
 import { Box, Heading } from "native-base";
 import { styles } from "./styles";
 
-export function Header() {
+interface HeaderProps {
+  title: string;
+}
+
+export function Header({ title }: HeaderProps) {
   return (
     <Box style={styles.container}>
-      <Heading style={styles.title}>CRUD - Todo</Heading>
+      <Heading style={styles.title}>{title}</Heading>
     </Box>
   );
 }
