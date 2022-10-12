@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "841121323302",
+    "project_id": "expo-bare-features-58e17",
+    "storage_bucket": "expo-bare-features-58e17.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841121323302:android:49000a36254a1cde5e09e7",
+        "android_client_info": {
+          "package_name": "com.expobarefeatures"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "841121323302-jntuf10eg1bc5hfod755akglnuhu6cdt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.expobarefeatures",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "841121323302-buedassuh1efd2r5r9l7q94b2kik0bf5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwnyGzVNkEW6LbDyxOPCNevYp6y-A_pFg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "841121323302-buedassuh1efd2r5r9l7q94b2kik0bf5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
