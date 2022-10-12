@@ -4,6 +4,8 @@ export declare global {
       Home: undefined;
       Others: undefined;
       FormExample: undefined;
+      FirebaseLogin: undefined;
+      FirebaseAuthenticated: undefined;
     }
   }
 }

@@ -3,7 +3,7 @@ import { Box, FlatList } from "native-base";
 import { Header } from "../../components/Header";
 import { FeaturesListItem } from "../../components/FeaturesListItem";
 
-import { featuresList } from "../../utils/featuesList";
+import { featuresList } from "../../utils/featuresList";
 
 import { styles } from "./styles";
 
