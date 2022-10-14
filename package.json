@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "set CURRENT_ENV=dev&& npx expo start --clear",
+    "dev": "set CURRENT_ENV=dev&& npx react-native start",
     "prod": "set CURRENT_ENV=prod&& npx expo start --clear",
     "api": "json-server --watch ./src/database/db.json -p 3333",
     "exposeApi": "npx ngrok http 3333",

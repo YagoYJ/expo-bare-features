@@ -48,7 +48,13 @@ export function FirebaseLogin() {
 
     auth()
       .signInWithEmailAndPassword(newUser.email, newUser.password)
-      .then((user) => console.log(JSON.stringify(user, null, 2)))
+      .then((user) => {
+        toast.show({
+          placement: "top",
+          render: () => <SuccessAlert text="Logged!" />,
+        });
+        console.log(JSON.stringify(user, null, 2));
+      })
       .catch((err) => console.log({ err }))
       .finally(() => setIsLoading(false));
   }
