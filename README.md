@@ -9,6 +9,7 @@
 - React Query
 - Variáveis de Ambiente (.env)
 - Json Server
+- Firebase
 
 ### Expo Bare Workflow
 
@@ -464,3 +465,77 @@ Isso vai permitir que acessemos nossa API remotamente. Após rodar o comando, ir
 Agora só pegar o link que aparece em **Forwarding** e utilizar ele como o baseUrl
 
 Documentação completa: [https://github.com/typicode/json-server](https://github.com/typicode/json-server)
+
+### Firebase
+
+O Firebase parece ser chatinho de ser implementado, mas vou mostrar que é mais simples do que parece.
+
+A biblioteca que vamos utilizar é o [rnfirebase](https://rnfirebase.io/)
+
+Antes de usar qualquer funcionalidade do Firebase, precisamos fazer as seguintes configurações:
+
+```cmd
+npm install --save @react-native-firebase/app
+ou
+yarn add @react-native-firebase/app
+```
+
+Caso não tenha, crie uma conta no [Firebase](https://firebase.google.com/). Se já tiver, entre na sua conta.
+
+Dentro da sua conta:
+- Crie um novo projeto.
+- Coloque o nome que desejar.
+- Ative o Google Analytics se quiser (nesse projeto foi ativado).
+- Selecione a conta default.
+- Quando o projeto terminar de ser criado, escolha a opção Android:
+![Firebase Android](src/assets/documentation/firebase-android-config.jpg)
+- No nome do pacote do Android, você deverá colocar o nome igual ao do package no arquivo MainApplication.java (aperte `ctrl + p` para localizar o arquivo).
+- Apelido do app pode ser qualquer nome.
+- O certificado SHA-1 é opcional, mas será necessário para esse projeto. Para gerar o código, rode o comando abaixo. Será gerado vários cerificados, copie o primeiro do tipo SHA-1.
+
+```cmd
+cd android && ./gradlew signingReport
+```
+- Faça o donwload do arquivo `google-services.json` e coloque em `/android/app`
+- Dentro de `/android/build.gradle`, adicione a seguinte linha:
+```gradle
+buildscript {
+      dependencies {
+        classpath('com.android.tools.build:gradle:7.1.1')
+        classpath('com.facebook.react:react-native-gradle-plugin')
+        classpath('de.undercouch:gradle-download-task:5.0.1')
+        classpath('com.google.gms:google-services:4.3.14') // <- Adicione essa linha
+    }
+}
+```
+- Dentro de `/android/app/build.gradle`, adicione:
+```gradle
+apply plugin: "com.android.application"
+apply plugin: "com.google.gms.google-services" // <- Adicione essa linha
+```
+
+Para finalizar a configuração, vamos fazer o autolink do que foi feito:
+
+- Abra o emulador Android.
+
+- Em uma aba do terminal na raiz do projeto, rode:
+```cmd
+npx react-native start
+ou
+yarn react-native start
+```
+
+- Em outra aba do terminal, rode:
+```cmd
+npx android
+ou
+yarn android
+```
+
+Esse procedimento vai demorar um pouco na primeira vez. Quando terminar, seu aplicativo abrirá no emulador.
+
+**Aviso!**
+
+Infelizmente o Expo Go não suporta as funcionalidades do Firebase, então a partir de agora será necessário utilizar um emulador ou conectar seu dispositivo Android no computador. O mesmo vale para o IOS.
+
+As funcinalidades específicas são mais facéis de ser implementadas, a documentação delas estão [aqui](https://rnfirebase.io/).
