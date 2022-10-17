@@ -1,4 +1,4 @@
-import { forwardRef, ForwardRefRenderFunction } from "react";
+import { forwardRef, ForwardRefRenderFunction, ReactNode } from "react";
 import { FormControl, Input } from "native-base";
 
 import { IInputProps } from "native-base/lib/typescript/components/primitives/Input/types";
@@ -6,13 +6,22 @@ import { IInputProps } from "native-base/lib/typescript/components/primitives/In
 interface InputProps extends IInputProps {
   value: string;
   required?: boolean;
-  label?: string;
+  label?: ReactNode;
   error?: string;
+  helperText?: string;
   handleChangeText: (text: string) => void;
 }
 
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
-  { value, required, label, error = null, handleChangeText, ...rest },
+  {
+    value,
+    required,
+    label,
+    error = null,
+    helperText = null,
+    handleChangeText,
+    ...rest
+  },
   ref
 ) => {
   return (
@@ -20,16 +29,17 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
       <FormControl.Label>{label}</FormControl.Label>
       <Input
         value={value}
-        variant="underlined"
         onChangeText={handleChangeText}
         ref={ref}
+        size="lg"
+        p="3"
         {...rest}
       />
-      {error ? (
-        <FormControl.ErrorMessage>{error}</FormControl.ErrorMessage>
-      ) : (
-        <></>
+
+      {helperText && (
+        <FormControl.HelperText>{helperText}</FormControl.HelperText>
       )}
+      {error && <FormControl.ErrorMessage>{error}</FormControl.ErrorMessage>}
     </FormControl>
   );
 };

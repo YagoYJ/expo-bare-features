@@ -4,6 +4,11 @@
     "slug": "expo-bare-features",
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
+    "splash": {
+      "image": "./assets/splash.png",
+      "backgroundColor": "#8257E5",
+      "resizeMode": "contain"
+    },
     "extra": {
       "eas": {
         "projectId": "21670136-e97e-49eb-899e-b45b0b72a9df"

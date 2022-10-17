@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { Features } from "../screens/Features";
-import { FirebaseLogin } from "../screens/FirebaseLogin";
+import { FirebaseAuth } from "../screens/FirebaseAuth";
 import { FormExample } from "../screens/FormExample";
 
 export type OthersRoutesProps = {
@@ -33,9 +33,9 @@ export function StackRoutes() {
       />
       <Stack.Screen
         name="FirebaseLogin"
-        component={FirebaseLogin}
+        component={FirebaseAuth}
         options={{
-          headerTitle: "Firebase Login",
+          headerTitle: "Firebase Auth",
           headerBackTitle: "Go Back",
         }}
       />

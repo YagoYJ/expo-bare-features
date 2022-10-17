@@ -1,12 +1,6 @@
 {
   "todos": [
     {
-      "title": "Task 2 aman",
-      "deadline": "2022-08-29",
-      "id": 1,
-      "done": true
-    },
-    {
       "title": "Task 1",
       "deadline": "2022-08-29",
       "done": true,
@@ -17,24 +11,6 @@
       "deadline": "2022-08-29",
       "done": true,
       "id": 3
-    },
-    {
-      "title": "Smmsms",
-      "deadline": "2022-08-29",
-      "done": true,
-      "id": 4
-    },
-    {
-      "title": "Msms",
-      "deadline": "2022-08-29",
-      "done": false,
-      "id": 5
-    },
-    {
-      "title": "Vvcchj",
-      "deadline": "2022-08-29",
-      "done": false,
-      "id": 6
     }
   ]
 }
