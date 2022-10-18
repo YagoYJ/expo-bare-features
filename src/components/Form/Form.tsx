@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { Platform } from "react-native";
 import { KeyboardAvoidingView, ScrollView, VStack } from "native-base";
 

@@ -1,4 +1,3 @@
-import * as React from "react";
 import { GestureResponderEvent } from "react-native";
 import { Button } from "native-base";
 

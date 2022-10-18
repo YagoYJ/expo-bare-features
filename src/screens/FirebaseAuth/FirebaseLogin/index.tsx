@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { Box, Heading, useToast } from "native-base";
+import { Box, Heading } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 
 import auth from "@react-native-firebase/auth";
 import { Button, Icon, Pressable, Stack } from "native-base";
 import { MainInput } from "../../../components/Form/MainInput";
-import { CustomAlert } from "../../../components/CustomAlert";
+import { useNavigation } from "@react-navigation/native";
 
 type User = {
   email: string;
@@ -26,20 +26,14 @@ export function FirebaseLogin({ toggleForm }: FirebaseLoginProps) {
     password: "",
   });
 
-  const toast = useToast();
+  const navigation = useNavigation();
 
   function handleLogin() {
     setIsLoading(true);
 
     auth()
       .signInWithEmailAndPassword(newUser.email, newUser.password)
-      .then((user) => {
-        toast.show({
-          placement: "top",
-          render: () => <CustomAlert text="Logged!" status="success" />,
-        });
-        console.log(JSON.stringify(user, null, 2));
-      })
+      .then(() => navigation.navigate("FirebaseAuthenticated"))
       .catch((err) => console.log({ err }))
       .finally(() => setIsLoading(false));
   }

@@ -1,17 +1,9 @@
-import {
-  Box,
-  Button,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  InputRightAddon,
-  Stack,
-} from "native-base";
-import React, { useState } from "react";
-import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { useState } from "react";
+import { Button, Input, InputGroup, Stack } from "native-base";
 import Icon from "react-native-vector-icons/Feather";
 
 import { useTodo } from "../../contexts/TodoContext";
+
 import { styles } from "./styles";
 
 export function TodoInput() {
