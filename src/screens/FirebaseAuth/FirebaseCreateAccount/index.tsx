@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import {
   Box,
   Heading,
@@ -10,16 +9,12 @@ import {
   Stack,
   useToast,
 } from "native-base";
-import auth from "@react-native-firebase/auth";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 
-import { CustomAlert } from "../../../components/CustomAlert";
 import { MainInput } from "../../../components/Form/MainInput";
-
-type NewUser = {
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
+import { useFirebase } from "../../../contexts/FirebaseContext";
+import { NewUser } from "../../../contexts/FirebaseContext/types";
+import { CustomAlert } from "../../../components/CustomAlert";
 
 interface FirebaseCreateAccountProps {
   toggleForm: () => void;
@@ -30,16 +25,24 @@ export function FirebaseCreateAccount({
 }: FirebaseCreateAccountProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
   const [newUser, setNewUser] = useState<NewUser>({
     email: "",
     password: "",
     confirmPassword: "",
   });
 
+  const { handleCreateUser } = useFirebase();
+
   const toast = useToast();
 
-  function handleCreateUser() {
+  function togglePasswordVisible() {
+    setShowPassword(!showPassword);
+  }
+
+  function handleSubmit() {
+    setIsLoading(true);
+
+    // TODO: Validate inputs in another file
     if (newUser.password !== newUser.confirmPassword) {
       return toast.show({
         placement: "top",
@@ -52,17 +55,9 @@ export function FirebaseCreateAccount({
       });
     }
 
-    setIsLoading(true);
-    auth()
-      .createUserWithEmailAndPassword(newUser.email, newUser.password)
-      .then(() => {
-        toast.show({
-          placement: "top",
-          render: () => <CustomAlert text="User created!" status="success" />,
-        });
-      })
-      .catch((error) => console.log(error))
-      .finally(() => setIsLoading(false));
+    handleCreateUser(newUser);
+
+    setIsLoading(false);
   }
 
   return (
@@ -109,7 +104,7 @@ export function FirebaseCreateAccount({
                 setNewUser({ ...newUser, password: value })
               }
               InputRightElement={
-                <Pressable onPress={() => setShowPassword(!showPassword)}>
+                <Pressable onPress={togglePasswordVisible}>
                   <Icon
                     as={
                       <Ionicons
@@ -137,7 +132,7 @@ export function FirebaseCreateAccount({
                 setNewUser({ ...newUser, confirmPassword: value })
               }
               InputRightElement={
-                <Pressable onPress={() => setShowPassword(!showPassword)}>
+                <Pressable onPress={togglePasswordVisible}>
                   <Icon
                     as={
                       <Ionicons
@@ -159,7 +154,7 @@ export function FirebaseCreateAccount({
             <Button
               w="100%"
               isLoading={isLoading}
-              onPress={handleCreateUser}
+              onPress={handleSubmit}
               mt="auto"
             >
               Sign Up

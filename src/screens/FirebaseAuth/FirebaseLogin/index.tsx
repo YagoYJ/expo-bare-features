@@ -3,10 +3,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { Box, Heading } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 
-import auth from "@react-native-firebase/auth";
 import { Button, Icon, Pressable, Stack } from "native-base";
 import { MainInput } from "../../../components/Form/MainInput";
-import { useNavigation } from "@react-navigation/native";
+import { useFirebase } from "../../../contexts/FirebaseContext";
 
 type User = {
   email: string;
@@ -20,22 +19,19 @@ interface FirebaseLoginProps {
 export function FirebaseLogin({ toggleForm }: FirebaseLoginProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  const [newUser, setNewUser] = useState<User>({
+  const [user, setUser] = useState<User>({
     email: "",
     password: "",
   });
 
-  const navigation = useNavigation();
+  const { handleLogin } = useFirebase();
 
-  function handleLogin() {
+  function handleSubmit() {
     setIsLoading(true);
 
-    auth()
-      .signInWithEmailAndPassword(newUser.email, newUser.password)
-      .then(() => navigation.navigate("FirebaseAuthenticated"))
-      .catch((err) => console.log({ err }))
-      .finally(() => setIsLoading(false));
+    handleLogin(user);
+
+    setIsLoading(false);
   }
 
   return (
@@ -56,11 +52,9 @@ export function FirebaseLogin({ toggleForm }: FirebaseLoginProps) {
               keyboardType="email-address"
               label="E-mail"
               placeholder="example@email.com"
-              value={newUser.email}
+              value={user.email}
               error={null}
-              handleChangeText={(value) =>
-                setNewUser({ ...newUser, email: value })
-              }
+              handleChangeText={(value) => setUser({ ...user, email: value })}
               InputLeftElement={
                 <Icon
                   as={<Ionicons name="person" size={24} color="black" />}
@@ -76,10 +70,10 @@ export function FirebaseLogin({ toggleForm }: FirebaseLoginProps) {
               type={showPassword ? "text" : "password"}
               label="Password"
               placeholder="Must be atleast 6 characters"
-              value={newUser.password}
+              value={user.password}
               error={null}
               handleChangeText={(value) =>
-                setNewUser({ ...newUser, password: value })
+                setUser({ ...user, password: value })
               }
               InputRightElement={
                 <Pressable onPress={() => setShowPassword(!showPassword)}>
@@ -104,7 +98,7 @@ export function FirebaseLogin({ toggleForm }: FirebaseLoginProps) {
             <Button
               w="100%"
               isLoading={isLoading}
-              onPress={handleLogin}
+              onPress={handleSubmit}
               mt="auto"
             >
               Sign Up

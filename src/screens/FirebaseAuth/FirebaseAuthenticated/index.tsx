@@ -1,12 +1,12 @@
 import { Box, Button, Heading, Stack, Text } from "native-base";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
+import { useFirebase } from "../../../contexts/FirebaseContext";
+
 export function FirebaseAuthenticated() {
   const user: FirebaseAuthTypes.User = auth().currentUser;
 
-  function handleSignOut() {
-    auth().signOut();
-  }
+  const { handleSignOut } = useFirebase();
 
   return (
     <Stack p="10" space={10}>
