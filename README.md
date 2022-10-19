@@ -10,6 +10,7 @@
 - Variáveis de Ambiente (.env)
 - Json Server
 - Firebase
+- Expo Camera
 
 ### Expo Bare Workflow
 
@@ -539,3 +540,94 @@ Esse procedimento vai demorar um pouco na primeira vez. Quando terminar, seu apl
 Infelizmente o Expo Go não suporta as funcionalidades do Firebase, então a partir de agora será necessário utilizar um emulador ou conectar seu dispositivo Android no computador. O mesmo vale para o IOS.
 
 As funcinalidades específicas são mais facéis de ser implementadas, a documentação delas estão [aqui](https://rnfirebase.io/).
+
+### Expo Camera
+
+Antes de começar, é necessário saber que essa biblioteca não funciona em emuladores, então é preciso rodar o projeto em um dispositivo físico, ou com o Expo Go (mas será necessário comentar todas as importações do Firebase).
+
+Instale a dependência:
+
+```cmd
+npx expo install expo-camera
+```
+
+No Android, as configurações nativas necessárias serão feitas automaticamente, mas no IOS, devemos adicionar o seguinte trecho de código dentro de `ios/expobarefeatures/Info.plist`:
+
+```xml
+	<key>NSCameraUsageDescription</key>
+		<string>Allow $(PRODUCT_NAME) to use the camera</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Allow $(PRODUCT_NAME) to use the microphone</string>
+```
+
+Um exemplo bem básico de implementar: 
+
+```tsx
+import { Camera, CameraType } from 'expo-camera';
+import { useState } from 'react';
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+export default function App() {
+  const [type, setType] = useState(CameraType.back);
+  const [permission, requestPermission] = Camera.useCameraPermissions();
+
+  if (!permission) ... 
+
+  if (!permission.granted) ... 
+
+  function toggleCameraType() {
+    setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
+  }
+
+  return (
+    <View style={styles.container}>
+      <Camera style={styles.camera} type={type}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
+            <Text style={styles.text}>Flip Camera</Text>
+          </TouchableOpacity>
+        </View>
+      </Camera>
+    </View>
+  );
+}
+
+```
+
+Além de imagens, também podemos gravar videos, e para visualizar o video, precisamos da biblioteca:
+
+```cmd
+npx expo install expo-av
+```
+
+No arquivo `android/build.gradle`, adicione:
+
+```gradle
+allprojects {
+    repositories {
+        mavenLocal()
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url(new File(['node', '--print', "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim(), '../android'))
+        }
+        maven {
+            // Android JSC is installed from npm
+            url(new File(['node', '--print', "require.resolve('jsc-android/package.json')"].execute(null, rootDir).text.trim(), '../dist'))
+            url("$rootDir/../node_modules/expo-camera/android/maven") // <- adicione essa linha
+        }
+```
+
+Dentro de `android/app/src/main/AndroidManifest.xml`, coloque:
+
+```xml
+  <!-- Added permissions -->
+  <uses-permission android:name="android.permission.CAMERA" />
+
+  <!-- Optional permissions -->
+  <uses-permission android:name="android.permission.RECORD_AUDIO" />
+```
+
+Pronto! Agora só partir para a implementação. 
+
+Toda a configuração pode ser encontrada na tela `Camera` no projeto.
+

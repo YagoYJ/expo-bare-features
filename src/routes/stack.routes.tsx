@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Camera } from "../screens/Camera";
 
 import { Features } from "../screens/Features";
 import { FirebaseAuth } from "../screens/FirebaseAuth";
@@ -9,9 +10,8 @@ export type OthersRoutesProps = {
   Features: undefined;
   FormExample: undefined;
   FirebaseLogin: undefined;
-  FirebaseAuthenticated: {
-    user: string;
-  };
+  FirebaseAuthenticated: undefined;
+  Camera: undefined;
 };
 
 export function StackRoutes() {
@@ -47,6 +47,13 @@ export function StackRoutes() {
         component={FirebaseAuthenticated}
         options={{
           headerTitle: "Firebase Authenticated",
+          headerBackTitle: "Go Back",
+        }}
+      />
+      <Stack.Screen
+        name="Camera"
+        component={Camera}
+        options={{
           headerBackTitle: "Go Back",
         }}
       />

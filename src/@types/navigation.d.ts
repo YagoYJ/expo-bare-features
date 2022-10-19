@@ -6,6 +6,7 @@ export declare global {
       FormExample: undefined;
       FirebaseLogin: undefined;
       FirebaseAuthenticated: undefined;
+      Camera: undefined;
     }
   }
 }
