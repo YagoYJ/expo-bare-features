@@ -17,7 +17,7 @@ export function FirebaseAuthenticated() {
         </Text>
       </Box>
 
-      <Button w="100%" onPress={handleSignOut}>
+      <Button w="100%" onPress={() => handleSignOut(user.email)}>
         Sign Up
       </Button>
     </Stack>

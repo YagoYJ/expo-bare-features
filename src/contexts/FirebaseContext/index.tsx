@@ -7,6 +7,7 @@ import {
 import { useToast } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import auth from "@react-native-firebase/auth";
+import analytics from "@react-native-firebase/analytics";
 
 import { CustomAlert } from "../../components/CustomAlert";
 
@@ -23,10 +24,14 @@ const FirebaseProvider = ({ children }: PropsWithChildren): ReactElement => {
   function handleCreateUser(newUser: NewUser) {
     auth()
       .createUserWithEmailAndPassword(newUser.email, newUser.password)
-      .then(() => {
+      .then(async ({ user }) => {
         toast.show({
           placement: "top",
           render: () => <CustomAlert text="User created!" status="success" />,
+        });
+
+        await analytics().logEvent("Create user", {
+          email: user.email,
         });
       })
       .catch((error) => console.log(error));
@@ -35,12 +40,23 @@ const FirebaseProvider = ({ children }: PropsWithChildren): ReactElement => {
   function handleLogin(user: User) {
     auth()
       .signInWithEmailAndPassword(user.email, user.password)
-      .then(() => navigation.navigate("FirebaseAuthenticated"))
+      .then(async ({ user }) => {
+        navigation.navigate("FirebaseAuthenticated");
+        await analytics().logEvent("User login", {
+          email: user.email,
+        });
+      })
       .catch((err) => console.log({ err }));
   }
 
-  function handleSignOut() {
-    auth().signOut();
+  function handleSignOut(email: string) {
+    auth()
+      .signOut()
+      .then(async () => {
+        await analytics().logEvent("User logout", {
+          user: email,
+        });
+      });
   }
 
   return (
