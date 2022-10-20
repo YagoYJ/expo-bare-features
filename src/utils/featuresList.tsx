@@ -1,5 +1,6 @@
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 import { FeatureItem } from "../components/FeaturesListItem";
 
@@ -13,5 +14,10 @@ export const featuresList: FeatureItem[] = [
     label: "Firebase Login",
     navigateTo: "FirebaseLogin",
     icon: <MaterialIcons name="login" size={24} color="#fff" />,
+  },
+  {
+    label: "Camera",
+    navigateTo: "Camera",
+    icon: <Feather name="camera" size={24} color="#fff" />,
   },
 ];
