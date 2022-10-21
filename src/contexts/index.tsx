@@ -5,13 +5,11 @@ import { TodoProvider } from "./TodoContext";
 
 function AppProvider({ children }: PropsWithChildren) {
   return (
-    <FirebaseProvider>
-      <CameraProvider>
-        <TodoProvider>
-          <FirebaseProvider>{children}</FirebaseProvider>
-        </TodoProvider>
-      </CameraProvider>
-    </FirebaseProvider>
+    <CameraProvider>
+      <TodoProvider>
+        <FirebaseProvider>{children}</FirebaseProvider>
+      </TodoProvider>
+    </CameraProvider>
   );
 }
 
