@@ -613,7 +613,11 @@ allprojects {
         maven {
             // Android JSC is installed from npm
             url(new File(['node', '--print', "require.resolve('jsc-android/package.json')"].execute(null, rootDir).text.trim(), '../dist'))
-            url("$rootDir/../node_modules/expo-camera/android/maven") // <- adicione essa linha
+        }
+
+        // Adicione o bloco de código abaixo
+        maven {
+            url("$rootDir/../node_modules/expo-camera/android/maven")
         }
 ```
 
