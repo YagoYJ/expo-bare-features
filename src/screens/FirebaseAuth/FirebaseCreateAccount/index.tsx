@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import {
   Box,
   Heading,
@@ -31,7 +31,7 @@ export function FirebaseCreateAccount({
     confirmPassword: "",
   });
 
-  const { handleCreateUser } = useFirebase();
+  const { handleCreateUser, googleSignin } = useFirebase();
 
   const toast = useToast();
 
@@ -56,6 +56,14 @@ export function FirebaseCreateAccount({
     }
 
     handleCreateUser(newUser);
+
+    setIsLoading(false);
+  }
+
+  async function handleGoogleSubmit() {
+    setIsLoading(true);
+
+    googleSignin();
 
     setIsLoading(false);
   }
@@ -158,6 +166,18 @@ export function FirebaseCreateAccount({
               mt="auto"
             >
               Sign Up
+            </Button>
+
+            <Button
+              w="100%"
+              isLoading={isLoading}
+              onPress={handleGoogleSubmit}
+              mt="5"
+              leftIcon={
+                <Icon as={AntDesign} name="google" size="sm" color="#fff" />
+              }
+            >
+              Signin with Google
             </Button>
 
             <Button size="sm" variant="link" onPress={toggleForm}>

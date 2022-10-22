@@ -13,6 +13,10 @@
       "eas": {
         "projectId": "21670136-e97e-49eb-899e-b45b0b72a9df"
       }
-    }
+    },
+    "android": {
+      "googleServicesFile": "./android/app/google-services.json"
+    },
+    "plugins": ["@react-native-google-signin/google-signin"]
   }
 }

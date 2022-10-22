@@ -1,3 +1,5 @@
+import { FirebaseAuthTypes } from "@react-native-firebase/auth";
+
 export type NewUser = {
   email: string;
   password: string;
@@ -10,4 +12,5 @@ export type FirebaseContextData = {
   handleCreateUser: (newUser: NewUser) => void;
   handleLogin: (user: User) => void;
   handleSignOut: (email: string) => void;
+  googleSignin: () => Promise<FirebaseAuthTypes.UserCredential>;
 };

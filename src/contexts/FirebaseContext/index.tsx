@@ -8,6 +8,7 @@ import { useToast } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import auth from "@react-native-firebase/auth";
 import analytics from "@react-native-firebase/analytics";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 import { CustomAlert } from "../../components/CustomAlert";
 
@@ -20,6 +21,11 @@ const FirebaseContext = createContext<FirebaseContextData>(
 const FirebaseProvider = ({ children }: PropsWithChildren): ReactElement => {
   const toast = useToast();
   const navigation = useNavigation();
+
+  GoogleSignin.configure({
+    webClientId:
+      "841121323302-buedassuh1efd2r5r9l7q94b2kik0bf5.apps.googleusercontent.com",
+  });
 
   function handleCreateUser(newUser: NewUser) {
     auth()
@@ -59,12 +65,27 @@ const FirebaseProvider = ({ children }: PropsWithChildren): ReactElement => {
       });
   }
 
+  async function googleSignin() {
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+
+    return auth().signInWithCredential(googleCredential);
+  }
+
   return (
     <FirebaseContext.Provider
       value={{
         handleCreateUser,
         handleLogin,
         handleSignOut,
+        googleSignin,
       }}
     >
       {children}

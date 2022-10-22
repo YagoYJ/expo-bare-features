@@ -14,11 +14,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "841121323302-jntuf10eg1bc5hfod755akglnuhu6cdt.apps.googleusercontent.com",
+          "client_id": "841121323302-24umpo6gnuk9445bk3jiop22ch2h2hrc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.expobarefeatures",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+            "certificate_hash": "a43a52801b6812b898f20e4ad0dfdf7b92d04e9c"
+          }
+        },
+        {
+          "client_id": "841121323302-8nhsu1gd1fjct9td3i2rf477ccsov1sn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.expobarefeatures",
+            "certificate_hash": "4d7017a28975d009217fbd162b302c97d6fbf0b6"
           }
         },
         {
