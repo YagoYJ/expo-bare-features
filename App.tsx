@@ -20,7 +20,9 @@ function App() {
     }
   }
 
-  useEffect(() => updateApp, []);
+  useEffect(() => {
+    updateApp();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

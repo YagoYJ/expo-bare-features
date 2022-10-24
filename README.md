@@ -11,6 +11,7 @@
 - Json Server
 - Firebase
 - Expo Camera
+- OTA
 
 ### Expo Bare Workflow
 
@@ -635,3 +636,72 @@ Pronto! Agora só partir para a implementação.
 
 Toda a configuração pode ser encontrada na tela `Camera` no projeto.
 
+### OTA
+
+O OTA (Over the air) é uma estratégia muito bacana para atualizar seus apps em produção de maneira fácil, rápida e sem precisar passar pela loja. Com essa ferramenta podemos atualizar diferentes coisas em diferentes ambientes de forma bem simples.
+
+Instale a dependência:
+
+```cmd
+npx expo install expo-updates 
+```
+
+Caso não tenha feito, crie as configurações do EAS, ele vai ser o responsável por direcionar a atualização do nosso app.
+```cmd
+eas update:configure 
+```
+
+```cmd
+eas build:configure
+```
+
+No arquivo `eas.json`, adicione os channels de acordo com os seus ambientes:
+
+```json
+{
+  "build": {
+    "preview": {
+      "channel": "preview"
+      // ...
+    },
+    "production": {
+      "channel": "production"
+      // ...
+    }
+  }
+}
+```
+
+Depois disso, alguns arquivos nativos serão configurados, se tiver algum problema quanto a isso, verfique a documentação do [Updating Bare App](https://docs.expo.dev/bare/updating-your-app/).
+
+No `App.tsx`, coloque o trecho de código abaixo antes do **return**:
+
+```tsx
+  async function updateApp() {
+    // Verifica se tem alguma atualização disponível
+    const { isAvailable } = await Updates.checkForUpdateAsync();
+
+    if (isAvailable) {
+      // Baixa a atualização
+      await Updates.fetchUpdateAsync();
+      // Reinicia o app para que as atualizações funcionem
+      await Updates.reloadAsync();
+    }
+  }
+
+  useEffect(() => {
+    updateApp();
+  }, []);
+```
+
+
+Pronto! Vamos criar um script no `package.json` para atualizar nosso app.
+
+```json
+    "publish:production": "eas update --branch production"
+```
+
+Viu como é fácil?! Agora sempre que você fizer uma atualização, basta rodar esse comando e tudo será atualizado de forma automática e sem passar pela loja!
+
+**Aviso!**
+As atualizações nativas **não** funcionam com o OTA, ou seja, se for preciso mexer nas pastas android ou ios, será necessário gerar um novo apk. Fora isso, tudo pode ser atualizado!
