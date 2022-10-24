@@ -3,7 +3,9 @@
     "name": "expo-bare-features",
     "slug": "expo-bare-features",
     "version": "1.0.0",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "splash": {
       "image": "./assets/splash.png",
       "backgroundColor": "#8257E5",
@@ -17,6 +19,13 @@
     "android": {
       "googleServicesFile": "./android/app/google-services.json"
     },
-    "plugins": ["@react-native-google-signin/google-signin"]
+    "plugins": [
+      "@react-native-google-signin/google-signin"
+    ],
+    "runtimeVersion": "1.0.0",
+    "ios": {},
+    "updates": {
+      "url": "https://u.expo.dev/21670136-e97e-49eb-899e-b45b0b72a9df"
+    }
   }
 }
